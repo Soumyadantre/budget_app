@@ -31,7 +31,7 @@ def load_model():
       st.warning("Model not found — training a new model...")
       df = pd.read_csv("processed_budget_data.csv")
 
-   feature_cols = [
+    feature_cols = [
         'Income','Age','Dependents','City_Tier','Rent','Loan_Repayment',
         'Insurance','Groceries','Transport','Eating_Out','Entertainment',
         'Utilities','Healthcare','Education','Miscellaneous',
