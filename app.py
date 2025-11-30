@@ -21,15 +21,23 @@ st.write("Enter your monthly expenses and get an AI-powered prediction of next m
 # ----------------------------------------------------
 # LOAD MODEL + DATA
 # ----------------------------------------------------
+import joblib
+import pandas as pd
+import streamlit as st
+from sklearn.ensemble import RandomForestRegressor
+import os
+
 @st.cache_resource
 def load_model():
-   
 
+    # If model exists, load it
     if os.path.exists("budget_model.joblib"):
-         model = joblib.load("budget_model.joblib")
-    else:
-      st.warning("Model not found — training a new model...")
-      df = pd.read_csv("processed_budget_data.csv")
+        return joblib.load("budget_model.joblib")
+
+    # Otherwise train new model
+    st.warning("Training new model — this will run only once.")
+
+    df = pd.read_csv("processed_budget_data.csv")
 
     feature_cols = [
         'Income','Age','Dependents','City_Tier','Rent','Loan_Repayment',
@@ -38,17 +46,22 @@ def load_model():
         'Total_Expenses','Lag_1','Lag_2','MA_3'
     ]
 
-    X = df[feature_cols]
-    y = df["Next_Month_Budget"]
+    missing = [c for c in feature_cols if c not in df.columns]
+    if missing:
+        st.error(f"Missing columns: {missing}")
+        st.stop()
 
-    from sklearn.ensemble import RandomForestRegressor
+    X = df[feature_cols]
+    y = df['Next_Month_Budget']
+
     model = RandomForestRegressor(n_estimators=200, random_state=42)
     model.fit(X, y)
+
+    # Save model
     joblib.dump(model, "budget_model.joblib")
 
-    st.success("Model trained successfully!")
-
     return model
+
 
 @st.cache_data
 def load_processed_data():
