@@ -27,7 +27,7 @@ def load_model():
 
     if os.path.exists("budget_model.joblib"):
          model = joblib.load("budget_model.joblib")
-   else:
+    else:
     st.warning("Model not found — training a new model...")
     df = pd.read_csv("processed_budget_data.csv")
 
