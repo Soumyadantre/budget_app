@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import matplotlib.pyplot as plt
+import os
 
 # ----------------------------------------------------
 # PAGE SETTINGS
@@ -22,7 +23,31 @@ st.write("Enter your monthly expenses and get an AI-powered prediction of next m
 # ----------------------------------------------------
 @st.cache_resource
 def load_model():
+   
+
+if os.path.exists("budget_model.joblib"):
     model = joblib.load("budget_model.joblib")
+else:
+    st.warning("Model not found — training a new model...")
+    df = pd.read_csv("processed_budget_data.csv")
+
+    feature_cols = [
+        'Income','Age','Dependents','City_Tier','Rent','Loan_Repayment',
+        'Insurance','Groceries','Transport','Eating_Out','Entertainment',
+        'Utilities','Healthcare','Education','Miscellaneous',
+        'Total_Expenses','Lag_1','Lag_2','MA_3'
+    ]
+
+    X = df[feature_cols]
+    y = df["Next_Month_Budget"]
+
+    from sklearn.ensemble import RandomForestRegressor
+    model = RandomForestRegressor(n_estimators=200, random_state=42)
+    model.fit(X, y)
+    joblib.dump(model, "budget_model.joblib")
+
+    st.success("Model trained successfully!")
+
     return model
 
 @st.cache_data
