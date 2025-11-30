@@ -25,9 +25,9 @@ st.write("Enter your monthly expenses and get an AI-powered prediction of next m
 def load_model():
    
 
-if os.path.exists("budget_model.joblib"):
-    model = joblib.load("budget_model.joblib")
-else:
+    if os.path.exists("budget_model.joblib"):
+         model = joblib.load("budget_model.joblib")
+   else:
     st.warning("Model not found — training a new model...")
     df = pd.read_csv("processed_budget_data.csv")
 
