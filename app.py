@@ -8,7 +8,7 @@ from sklearn.metrics import r2_score
 
 st.set_page_config(page_title="Budget Prediction App", layout="wide")
 
-st.title("💰 Budget Prediction App")
+st.title(" Budget Prediction App")
 st.write("Enter your details below to predict next month's total expenses.")
 
 # --------------------------
