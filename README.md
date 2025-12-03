@@ -1,5 +1,5 @@
-# budget_app
-# 💰 Budget Prediction App  
+
+# Budget Prediction App  
 A Streamlit web application that predicts a user's next-month **Total Expenses** using a trained **Random Forest Regressor**.  
 The model uses expense details, demographics, and other financial factors to estimate the budget.
 
